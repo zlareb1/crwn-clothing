@@ -3,43 +3,41 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-    apiKey: "AIzaSyDOYx05AH06FWsNFpD-gaFYVWjAk4AhgjE",
-    authDomain: "crwn-db-4ab97.firebaseapp.com",
-    databaseURL: "https://crwn-db-4ab97.firebaseio.com",
-    projectId: "crwn-db-4ab97",
-    storageBucket: "crwn-db-4ab97.appspot.com",
-    messagingSenderId: "848086466781",
-    appId: "1:848086466781:web:b429ad49cbc6f118b91b34",
-    measurementId: "G-8NS461JWWM"
-};
-
-export const createUserProfileDocument = async(userAuth, additionalData) => {
-    if(!userAuth) return;
-
-    const userRef = firestore.doc(`users/${userAuth.uid}`);
-
-    const snapShot = userRef.get();
-
-    if(!snapShot.exists) {
-        const { displayName, email } = userAuth;
-        const createdAt = new Date();
-
-        try {
-            await userRef.set({
-                displayName,
-                email,
-                createdAt,
-                ...additionalData
-            })
-        } catch(error) {
-            console.log('error creating user', error.message);
-        }
-    }
-
-    return userRef;
+  apiKey: 'AIzaSyCdHT-AYHXjF7wOrfAchX4PIm3cSj5tn14',
+  authDomain: 'crwn-db.firebaseapp.com',
+  databaseURL: 'https://crwn-db.firebaseio.com',
+  projectId: 'crwn-db',
+  storageBucket: 'crwn-db.appspot.com',
+  messagingSenderId: '850995411664',
+  appId: '1:850995411664:web:7ddc01d597846f65'
 };
 
 firebase.initializeApp(config);
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+  const snapShot = await userRef.get();
+
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData
+      });
+    } catch (error) {
+      console.log('error creating user', error.message);
+    }
+  }
+
+  return userRef;
+};
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
